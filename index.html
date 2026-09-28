@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MovieBook - Movie Booking Prototype</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <section id="splash" class="screen splash">
+    <div class="logo">🎬</div><h1>MovieBook</h1><p>Book movies. Enjoy moments.</p>
+  </section>
+
+  <section id="login" class="screen auth hidden">
+    <div class="card auth-card">
+      <div class="logo small">🎬</div>
+      <h2>Welcome to MovieBook</h2>
+      <p class="muted">Sign in to book your movie tickets</p>
+      <input id="loginName" placeholder="Enter your name">
+      <input id="loginEmail" type="email" placeholder="Email address">
+      <button class="primary" onclick="login()">Login / Create Account</button>
+      <button class="link-btn" onclick="demoLogin()">Continue as Guest</button>
+    </div>
+  </section>
+
+  <section id="main" class="screen hidden">
+    <header class="topbar">
+      <div>
+        <small>📍 Your City</small>
+        <h2>MovieBook</h2>
+      </div>
+      <button class="icon-btn" onclick="showToast('No new notifications')">🔔</button>
+    </header>
+
+    <main class="content">
+      <div class="search"><span>🔍</span><input id="search" placeholder="Search movies..." oninput="renderMovies()"></div>
+      <div class="hero">
+        <div><span class="pill">NOW SHOWING</span><h1>Find your next movie</h1><p>Book your favourite movies and choose your perfect seats.</p></div>
+        <div class="hero-emoji">🍿</div>
+      </div>
+
+      <div class="section-title"><h3>Movies</h3><button onclick="setFilter('all')">See all</button></div>
+      <div class="chips">
+        <button class="chip active" data-filter="all" onclick="setFilter('all')">All</button>
+        <button class="chip" data-filter="Action" onclick="setFilter('Action')">Action</button>
+        <button class="chip" data-filter="Drama" onclick="setFilter('Drama')">Drama</button>
+        <button class="chip" data-filter="Comedy" onclick="setFilter('Comedy')">Comedy</button>
+      </div>
+      <div id="movieGrid" class="movie-grid"></div>
+
+      <div id="bookingsPanel" class="panel hidden">
+        <h3>🎟️ My Bookings</h3>
+        <div id="bookingList"></div>
+      </div>
+      <div id="profilePanel" class="panel hidden">
+        <h3>👤 Profile</h3>
+        <div class="profile-box"><div class="avatar">👤</div><div><b id="profileName">Guest</b><p class="muted">MovieBook member</p></div></div>
+        <div class="settings-list">
+          <button onclick="showToast('Payment methods')">💳 Payment methods</button>
+          <button onclick="showToast('Notifications enabled')">🔔 Notifications</button>
+          <button onclick="showToast('Settings opened')">⚙️ Settings</button>
+          <button onclick="logout()">🚪 Logout</button>
+        </div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav active" onclick="navTo('home')">🏠<span>Home</span></button>
+      <button class="nav" onclick="focusSearch()">🔍<span>Search</span></button>
+      <button class="nav" onclick="navTo('bookings')">🎟️<span>Bookings</span></button>
+      <button class="nav" onclick="navTo('profile')">👤<span>Profile</span></button>
+    </nav>
+  </section>
+
+  <section id="details" class="screen hidden">
+    <header class="detail-head"><button class="back" onclick="goHome()">←</button><span>Movie Details</span><button class="icon-btn">♡</button></header>
+    <main id="detailsContent" class="content"></main>
+  </section>
+
+  <section id="booking" class="screen hidden">
+    <header class="detail-head"><button class="back" onclick="showScreen('details')">←</button><span>Book Tickets</span><span></span></header>
+    <main class="content">
+      <div class="booking-summary" id="bookingMovie"></div>
+      <h3>Select Date</h3>
+      <div id="dates" class="date-row"></div>
+      <h3>Select Cinema & Show</h3>
+      <div id="theatres"></div>
+      <h3>Select Seats</h3>
+      <div class="screen-label">SCREEN</div>
+      <div id="seats" class="seat-grid"></div>
+      <div class="legend"><span>🟩 Available</span><span>🟥 Booked</span><span>🟦 Selected</span></div>
+      <div class="checkout-bar"><div><small>Total</small><b id="total">₹0</b></div><button class="primary" onclick="toPayment()">Proceed</button></div>
+    </main>
+  </section>
+
+  <section id="payment" class="screen hidden">
+    <header class="detail-head"><button class="back" onclick="showScreen('booking')">←</button><span>Payment</span><span></span></header>
+    <main class="content">
+      <div class="card"><h3>Order Summary</h3><div id="paymentSummary"></div></div>
+      <h3>Payment Method</h3>
+      <div class="payment-options">
+        <button class="pay-option selected">📱 UPI <span>✓</span></button>
+        <button class="pay-option">💳 Card</button>
+        <button class="pay-option">🏦 Net Banking</button>
+      </div>
+      <button class="primary full" onclick="payNow()">Pay & Confirm Booking</button>
+    </main>
+  </section>
+
+  <section id="success" class="screen hidden">
+    <main class="success content">
+      <div class="success-icon">✓</div><h1>Booking Successful!</h1><p class="muted">Your movie ticket is confirmed.</p>
+      <div class="ticket" id="ticket"></div>
+      <button class="primary full" onclick="downloadTicket()">Download Ticket</button>
+      <button class="secondary full" onclick="navTo('bookings')">View My Bookings</button>
+      <button class="link-btn" onclick="goHome()">Back to Home</button>
+    </main>
+  </section>
+</div>
+<div id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
